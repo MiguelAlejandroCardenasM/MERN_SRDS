@@ -7,7 +7,7 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "mongoe": "export LC ALL=C",
-    "webpack": "webpack --mode development"
+    "webpack": "webpack --mode development --watch"
   },
   "keywords": [],
   "author": "",

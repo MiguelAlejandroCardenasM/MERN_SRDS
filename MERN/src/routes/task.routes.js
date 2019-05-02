@@ -3,13 +3,13 @@ const router=express.Router();
 const Task =require('../models/task');
 //Busqueda de la BD obtiene valores mediante un metodo asincrono
 router.get('/',async (req,res)=>{
-    const tasks=await Task.find();
-    res.json('received');
+    const tasks = await Task.find();
+    res.json(tasks);
 });
 //Muestra en pantalla los resultados
 router.post('/',async(req, res)=>{
     const{title,description}=req.body;
-    new Task({title,description});
+    const task=new Task({title,description});
     await task.save();
     res.json('received');
 });
