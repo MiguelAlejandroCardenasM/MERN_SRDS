@@ -1,21 +1,103 @@
 import React , {Component}from 'react';
+import Login from './Login';
+import Perfil from './Perfil';
 
 
 
 class App extends Component{
     
+
     constructor(){
         super();
         this.state={
-            title:'',
-            description:''
+            Usuario:'',
+            Contrasena:'',
+            nombre:'',
+            Apellidos:'',
+            GradoEstudios:'',
+            HorarioDispo:'',
+            _id:'',
+            registros:[]
         }
         this.nuevoRegistro= this.nuevoRegistro.bind(this);
         this.handleChange= this.handleChange.bind(this);
+        this.handleChange2= this.handleChange2.bind(this);
     }
+    componentDidMount(){
+        this.fetchtasks();
+    }
+    fetchtasks(){
+        fetch('/api/tasks')
+            .then(res=>res.json())
+            .then(data=>{
+                console.log(data);
+                this.setState({registros: data});
+            });
+    }
+    //Borrar
+    borrar(id){
+        if(confirm('Esta seguro de querer eliminar?')){
+            //console.log('/api/tasks/'+id);
+        fetch('/api/tasks/'+ id,{
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res=>res.json())
+        .then(data=>{
+            console.log(data);
+            M.toast({html: 'Eliminado'});
+            this.fetchtasks();
+        })
+        }
+    }
+    //Editar
+
+    Editar(id){
+        fetch(`/api/tasks/${id}`)
+        .then(res=>res.json())
+        .then(data=>{
+            console.log(data);
+            this.setState({
+            Usuario: data.Usuario,
+            Contrasena: data.Contrasena,
+            nombre: data.nombre,
+            Apellidos: data.Apellidos,
+            GradoEstudios: data.GradoEstudios,
+            HorarioDispo: data.HorarioDispo,
+            _id: data._id
+            });
+        });
+    }
+    
     //agrega el nuevo registro del formulario
     nuevoRegistro(e){
-        fetch('/api/tasks',
+        if(this.state._id){
+            fetch(`/api/tasks/${this.state._id}`,{
+                method: 'PUT',
+                body: JSON.stringify(this.state),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(res=>res.json())
+            .then (data=>{
+                console.log(data);
+                M.toast({html: 'Actualizado'});
+                this.setState({Usuario:'',
+                Contrasena:'',
+                nombre:'',
+                Apellidos:'',
+                GradoEstudios:'',
+                HorarioDispo:''});
+                this.fetchtasks();
+            })
+
+        }else{
+            fetch('/api/tasks',
         {
             method:'POST',
             body: JSON.stringify(this.state),
@@ -24,8 +106,21 @@ class App extends Component{
                 'Content-Type': 'application/json'
             }
         })
-        .then(res=>console.log(res))
-        .catch(err=>console.error(err));
+        .then(res=> res.json())
+        .then(data =>{
+            console.log(data);
+            M.toast({html: 'Guardado'});
+            this.setState({Usuario:'',
+            Contrasena:'',
+            nombre:'',
+            Apellidos:'',
+            GradoEstudios:'',
+            HorarioDispo:''});
+            this.fetchtasks();
+        });
+        }
+        
+        
         //evita que la pagina se refresque
         e.preventDefault(e);
     }
@@ -35,63 +130,64 @@ class App extends Component{
             [name]:value
         });
     }
+    handleChange2(e) {
+        console.log(e.value);
+        this.setState({HorarioDispo: e.value });
+      }
 
     render(){
         return (
-            <div>
-                {/*<nav className="nav-wrapper">
-                    <form>
-                        <div className="input-field">
-                            <input id="search" color="blue" type="search"  placeholder="Buscar" required></input>
-                            <label className="label-icon" for="search">
-                            <i className="material-icons">search</i>
-                            </label>
-                            <i className="material-icons" >close</i>
-                        </div>
-                    </form>
-        </nav>*/}
-                    <div className="container" >
-                        <div className="row">
-                            <div className="col s5">
-                                <div className="card">
-                                    <div className="card-content">
-                                        <form onSubmit={this.nuevoRegistro }> 
-                                            <div className="row">
-                                                <div className="input-field col s12">
-                                                    <input name="title" onChange={this.handleChange} type="text" placeholder="text" />
-                                                </div>
-                                            </div>
-                                            <div className="row">
-                                                <div className="input-field col s12">
-                                                    <textarea name="description" onChange={this.handleChange} className="materialize-textarea" placeholder="Descripcion">
+            <div className="container ">       
+                    
+                   {/*<Login /> */} 
 
-                                                    </textarea>
-                                                </div>
-                                            </div>
-                                            <button  className="btn ligth-blue" type="submit" >
-                                                Enviar
-                                            </button>
-                                        </form> 
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col s7">
-                                <div className="card">
-                                    <div className="card-content">
-                                        <form>
-                                            <div className="row">
-                                                <div className="input-field col s12">
-                                                    <input type="input" placeholder="text" />
-                                                </div>
-                                            </div>
-                                        </form> 
-                                    </div>
-                                </div>
+                    <nav>
+                        <div className="nav-wrapper purple darken-4 ">
+                            <a href="#!" className="brand-logo center">SRDS</a>
+                            <a href="/api/tasks">aqui</a>
+                          
+                            
+                           
+                        </div>
+                    </nav>
+                    {/*<Perfil color='blue' mensaje='soy el mapa'/>*/}
+                   
+                            <div className="col s6">
+                                <table className="striped">
+                                    <thead>
+                                        <tr>
+                                        <th>Nombre</th>
+                                        <th>Apellidos</th>
+                                        <th>Grado de Estudios</th>
+                                        <th>Disponibilidad</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {
+                                            this.state.registros.map(registro=>{
+                                                return(
+                                                    <tr key= {registro._id}>
+                                                        <td>{registro.nombre}</td>
+                                                        <td>{registro.Apellidos}</td>
+                                                        <td>{registro.GradoEstudios}</td>
+                                                        <td>{registro.HorarioDispo}</td>
+                                                        <td>
+                                                            
+                                                            <button className="btn ligth-blue" onClick={()=>this.Editar(registro._id)}><i className="material-icons">edit</i></button>
+                                                            <button className="btn ligth-blue" onClick={()=>this.borrar(registro._id)}><i className="material-icons">delete</i></button>
+                                                        </td>
+                                                        
+                                                    </tr>
+
+                                                )
+                                         })
+                                        }
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                    </div>
-                
-            </div>
+                  
+            
         );
     }
 }

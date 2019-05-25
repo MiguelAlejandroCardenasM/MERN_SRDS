@@ -1,6 +1,9 @@
 import React from 'react';
 import {render} from 'react-dom';
-import App from './App';
+import {BrowserRouter, Route} from 'react-router-dom';
+import Prueba from './Prueba';
 
 
-render(<App/>,document.getElementById('app'));
+
+ 
+render(<BrowserRouter><Prueba/></BrowserRouter>,document.getElementById('app'));
