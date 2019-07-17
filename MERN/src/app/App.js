@@ -1,7 +1,4 @@
 import React , {Component}from 'react';
-import Login from './Login';
-import Perfil from './Perfil';
-
 
 
 class App extends Component{
@@ -145,9 +142,6 @@ class App extends Component{
                         <div className="nav-wrapper purple darken-4 ">
                             <a href="#!" className="brand-logo center">SRDS</a>
                             <a href="/api/tasks">aqui</a>
-                          
-                            
-                           
                         </div>
                     </nav>
                     {/*<Perfil color='blue' mensaje='soy el mapa'/>*/}

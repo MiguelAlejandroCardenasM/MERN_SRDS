@@ -4,6 +4,8 @@ import Perfil from './Perfil';
 import Login from './Login';
 import App from './App';
 import Registro from './Registro';
+import Ranking from './Ranking';
+import CalCal from './CalcularCal';
 
 class Prueba extends Component {
     render() {
@@ -13,6 +15,10 @@ class Prueba extends Component {
             <Route exact path='/' component={Login}/>
             <Route path='/Login' component={Login}/>
             <Route path='/Registro' component={Registro}/>
+            <Route path='/Perfil' component={Perfil}/>
+            <Route path='/api/tasks' component={App}/>
+            <Route path='/Ranking' component={Ranking}/>
+            <Route path='/CalcularC' component={CalCal}/>
           </Switch>
         </div>
       )

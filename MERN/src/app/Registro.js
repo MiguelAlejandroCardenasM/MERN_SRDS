@@ -1,18 +1,9 @@
 import React,{Component} from 'react';
 import Select from 'react-select';
 import {Redirect,Link} from 'react-router-dom';
-import Login from './Login';
+import {Sexo} from './data';
 
-import App from './App';
 
-const horarios= [
-    { label: "Apple", value: '1' },
-    { label: "Facebook", value: '2' },
-    { label: "Netflix", value: '3' },
-    { label: "Tesla", value: '4' },
-    { label: "Amazon", value: '5' },
-    { label: "Alphabet", value: '6' },
-  ];
 
 class Registro extends Component{
     constructor(){
@@ -20,19 +11,23 @@ class Registro extends Component{
         this.state={
             Usuario:'',
             Contrasena:'',
-            nombre:'',
+            Nombre:'',
             Apellidos:'',
-            GradoEstudios:'',
-            HorarioDispo:'',
+            Edad:'',
+            Altura:'',
+            Peso:'',
             _id:'',
+            Sexo:'',
             registros:[]
         }
         this.nuevoRegistro= this.nuevoRegistro.bind(this);
         this.handleChange= this.handleChange.bind(this);
         this.handleChange2= this.handleChange2.bind(this);
+        
     }
 
     componentDidMount(){
+        this.setState({_id:this.props.location.state.id});
         this.fetchtasks();
     }
     fetchtasks(){
@@ -60,11 +55,15 @@ class Registro extends Component{
                 M.toast({html: 'Actualizado'});
                 this.setState({Usuario:'',
                 Contrasena:'',
-                nombre:'',
+                Nombre:'',
                 Apellidos:'',
-                GradoEstudios:'',
-                HorarioDispo:''});
+                Edad:'',
+                Altura:'',
+                Peso:'',
+                Sexo:''
+            });
                 this.fetchtasks();
+                location.href="/";
             })
 
         }else{
@@ -83,11 +82,13 @@ class Registro extends Component{
             M.toast({html: 'Guardado'});
             this.setState({Usuario:'',
             Contrasena:'',
-            nombre:'',
+            Nombre:'',
             Apellidos:'',
-            GradoEstudios:'',
-            HorarioDispo:''});
-            //this.fetchtasks();
+            Edad:'',
+            Altura:'',
+            Peso:'',
+            Sexo:''
+        });            
             location.href="/";
         });
         }
@@ -105,8 +106,8 @@ class Registro extends Component{
         });
     }
     handleChange2(e) {
-        console.log(e.value);
-        this.setState({HorarioDispo: e.value });
+        console.log(e.value);      
+        this.setState({Sexo: e.value  });
       }
 
 render (){
@@ -116,7 +117,7 @@ render (){
                 <div className="col s6 offset-s2">
                     <div className="card">
                         <div className="card-content ">
-                            <span className="card-title center-align blue">Registro</span>
+                            <span className="card-title center-align ">Registro</span>
                             <form onSubmit={this.nuevoRegistro }> 
                                 <div className="row">
                                     <div className="input-field col s12  ">
@@ -132,7 +133,7 @@ render (){
                                 </div>
                                 <div className="row">
                                     <div className="input-field col s12">
-                                        <input name="nombre" value={this.state.nombre} onChange={this.handleChange} type="text" placeholder="Nombres" required/>
+                                        <input name="Nombre" value={this.state.Nombre} onChange={this.handleChange} type="text" placeholder="Nombres" required/>
                                     </div>
                                 </div> 
                                 <div className="row">
@@ -142,13 +143,21 @@ render (){
                                 </div>
                                 <div className="row">
                                     <div className="input-field col s12">
-                                        <input name="GradoEstudios" value={this.state.GradoEstudios} onChange={this.handleChange} type="text" placeholder="Grado de Estudios" required/>
+                                        <input name="Altura"  value={this.state.Altura} onChange={this.handleChange} type="text" placeholder="Altura (cm)" required/>
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="input-field col s12">
-                    <Select name="HorarioDispo" options={horarios} onChange={this.handleChange2} required/>
-                        </div>
+                                        <input name="Peso" value={this.state.Peso} onChange={this.handleChange} type="text" placeholder="Peso (kg)" required/>
+                                    </div>
+                                </div> 
+                                <div className="row">
+                                    <div className="input-field col s12">
+                                        <input name="Edad" value={this.state.Edad} onChange={this.handleChange} type="text" placeholder="Edad" required/>
+                                    </div>
+                                </div> 
+                                <div className="row">
+                                  <Select defaultValue={Sexo[0]} options={Sexo} onChange={this.handleChange2}></Select>
                                 </div>  
                                 <div className="row">                                         
                                 <button  className="btn ligth-blue col s12" type="submit" >

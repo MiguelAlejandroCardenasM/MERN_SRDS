@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Link} from 'react-router-dom';
+import {Link,Redirect} from 'react-router-dom';
 
 class Login extends Component{
      constructor(){
@@ -8,7 +8,8 @@ class Login extends Component{
             User:'',
             pass:'',
             _id:'',
-            arreglo:[]
+            arreglo:[],
+            redirect: false
              
          }
          this.handleChange= this.handleChange.bind(this);
@@ -20,7 +21,8 @@ class Login extends Component{
         fetch(`/api/tasks/validate/${this.state.User}/${this.state.pass}`)
         .then(res=>res.json())
         .then (data=>{
-
+            if (data._id)
+            this.setState({_id:data._id,redirect:true});
         });
         
         
@@ -34,17 +36,25 @@ class Login extends Component{
         });
     }
     render(){
-
+        if(this.state.redirect){
+            
+            return <Redirect to={{ pathname:'/Perfil',
+            state:{
+                iden: this.state._id
+                
+            }}
+            }></Redirect> 
+            }
         
         return(
             <div className="container  " >
                 
                         <div className="row">
-                            <div className="col s6 offset-s2">
+                            <div className="col s12 ">
                                 <div className="card">
                                 <div className="card-action blue darken-3 white-text center-align ">
                                 
-                            <h4><img src="/imagenes/logo.png" style={{height: '75px'}}></img> Inicio Sesion</h4>
+                            <h4><img src="/imagenes/logo1.png" style={{height: '75px'}}></img><br/> Inicio Sesion</h4>
                         </div>
                                     <div className="card-content">
                                     
@@ -67,9 +77,14 @@ class Login extends Component{
                                             </button>
                                         </form> 
                                         <div className="row center-align" > 
-                                        <Link to={'./Registro'} className="center-align">
+                                        <Link to={{ pathname:'/Registro',
+                                        state:{
+                                        _id: this.state._id
+                
+            }}} className="center-align">
                                             Registrarse
                                         </Link>
+                                        
                                         </div>
                                     </div>
                                 </div>
